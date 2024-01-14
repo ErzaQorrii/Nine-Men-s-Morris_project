@@ -3,5 +3,4 @@ Punuar nga:
  Erza Qorri, Maltine Rama, Alketa Bala, Jeta Syla, Arbresha Stublla, Yllka Nishevci, Puhiza Tmava, Leonita Bahtiri, Lironë Bytyçi, Yll Pajaziti,Sumeja Veseli
  
 
-Commit testing
 
