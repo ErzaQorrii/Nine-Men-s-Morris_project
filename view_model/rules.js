@@ -227,3 +227,114 @@ function check_builds_mill (index, colour) {
     }
     
     
+function human_move () {
+        
+        indicate_thinking();
+        
+        if ( initial_pieces[human_colour].length ) {
+            enable_set();
+            return;
+        }
+        
+        var counter = 0;
+        for ( var i = 0; i < places.length; i++ ) {
+            if ( places[i].has_piece == human_colour )
+                counter++;
+        }
+        if ( counter < 3 ) {
+            game_over(machine_colour);
+            return;
+        }
+        if ( counter == 3 ) {
+            enable_jump();
+            return;
+        }
+        enable_move();
+    }
+    function machine_move (id, remove) {
+        
+        if ( expected_answer_counter != id )
+            return;
+        
+        indicate_thinking(machine_colour);
+        
+        var msg = {
+            id: id,
+            moving: actual_colour,
+            initial_pieces: [initial_pieces.white.length, initial_pieces.black.length],
+            remove: !!remove
+        };
+        var board = [];
+        var has_piece, value;
+        for ( var i = 0; i < places.length; i++ ) {
+            has_piece = places[i].has_piece;
+            if ( !has_piece )
+                value = 0;
+            else
+                value = numeric_colours[has_piece];
+            board[i] = value;
+        }
+        msg.board = board;
+        
+        ai.postMessage(msg);
+        
+        setTimeout(machine_move, RETARDITION, id, remove);
+    }
+    function toggle_actor () {
+        actual_colour = (actual_colour == "white") ? "black" : "white";
+        if ( actual_colour == human_colour )
+            human_move();
+        else
+            machine_move(expected_answer_counter);
+    }
+    
+    function game_over (winner) {
+        indicate_thinking(winner + "_wins");
+        change_borders(winner);
+        console.log( winner + " wins!" );
+    }
+    
+    
+
+    var places = generate_places();
+    var initial_pieces = {
+        white: generate_pieces("white"),
+        black: generate_pieces("black")
+    };
+    
+    var ai = new Worker( "model/ai.js" );
+    ai.onmessage = function ( event ) {
+        
+        if ( !event.data || event.data.id != expected_answer_counter )
+            return;
+        
+        console.log( event.data );
+        
+        expected_answer_counter++;
+        
+        switch (event.data.task) {
+            case "set_piece":
+                piece_set(event.data.place, machine_colour);
+            break;
+            case "move_piece":
+                piece_moved(event.data.from, event.data.to, machine_colour);
+            break;
+            case "jump_piece":
+                piece_moved(event.data.from, event.data.to, machine_colour);
+            break;
+            case "remove_piece":
+                setTimeout(piece_removed, 1001, event.data.place, human_colour);
+            break;
+            case "give_up":
+                game_over(human_colour);
+            break;
+        }
+    };
+    
+    
+    if ( actual_colour == human_colour )
+        human_move();
+    else
+        machine_move(expected_answer_counter);
+}
+new Rules();
