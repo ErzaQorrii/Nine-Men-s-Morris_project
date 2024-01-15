@@ -39,4 +39,24 @@ function Piece (colour) {
                 el.parentNode.removeChild(el);
         }, 1001, myself.element);
     };
+     this.initialise_move = function (index, targets, callback) {
+        machine = null;
+        human = human || new Human(myself.element);
+        human.initialise(myself, index, targets, callback);
+    };
+    this.disable_move = function () {
+        if ( !human )
+            return;
+        human.reset();
+    };
     
+    this.slide = function (src, tgt_class, tgt_element) {
+        human = null;
+        machine = machine || new Machine(myself.element);
+        machine.initialise(src, tgt_class, tgt_element);
+    };
+    
+    
+    this.element = document.createElement("div");
+    this.element.className = "piece " + colour;
+}
