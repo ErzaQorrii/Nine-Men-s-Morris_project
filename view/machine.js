@@ -18,3 +18,20 @@ function Machine (element) {
         ev.target.parentNode.removeChild(ev.target);
         element.style.visibility = "visible";
     }
+   function clone (src, tgt_class, tgt_element) {
+        var cloned = element.cloneNode(true);
+        cloned.style.visibility = "visible";
+        cloned.style.zIndex = 1;
+        var coordinates = get_offset(src, tgt_class);
+        cloned.style.left = coordinates[0] + "px";
+        cloned.style.top = coordinates[1] + "px";
+        tgt_element.appendChild(cloned);
+        cloned.classList.add("rather_slow");
+        setTimeout(animate, 41, cloned, coordinates);
+    }
+    
+    this.initialise = function (src, tgt_class, tgt_element) {
+        element.style.visibility = "hidden";
+        clone(src, tgt_class, tgt_element);
+    };
+}
