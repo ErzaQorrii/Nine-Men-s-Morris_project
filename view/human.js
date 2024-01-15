@@ -116,3 +116,86 @@ var Human = (function (playground) {
             element.removeEventListener("touchend", touchend, false);
         };
     }
+
+    var utilities;
+    if( navigator.userAgent.match(/android|iphone|ipad|mobile|surface/i) ) {
+        try {
+            var dummy = new TouchEvent("touchstart");
+            utilities = new Touchdriven();
+        }
+        catch (e) {}
+    }
+    if ( !utilities )
+        utilities = new Mousedriven();
+
+    return function (element) {
+        
+        var myself = this;
+
+        var piece;
+        var targets;
+        var callback;
+        var src_index = -1;
+
+        function start (pageX, pageY, size) {
+            if ( !element.cloned ) {
+                element.cloned = element.cloneNode(true);
+                element.cloned.style.position = "absolute";
+                element.cloned.style.width = size.w + "px";
+                element.cloned.style.height = size.h + "px";
+                element.cloned.style.zIndex = 1;
+            }
+            element.cloned.style.left = (pageX - size.center_x) + "px";
+            element.cloned.style.top = (pageY - size.center_y) + "px";
+            document.body.appendChild(element.cloned);
+        }
+        function move (pageX, pageY, size, abort_fnc) {
+            if ( !element.cloned ) {
+                abort_fnc(element);
+                return;
+            }
+            element.cloned.style.left = (pageX - size.center_x) + "px";
+            element.cloned.style.top = (pageY - size.center_y) + "px";
+        }
+        function end (pageX, pageY) {
+            if ( !targets || !targets.length )
+                return;
+            var rect;
+            for ( var i = 0; i < targets.length; i++ ) {
+                rect = targets[i].tell_area();
+                if ( pageX > rect.left && pageY > rect.top && pageX < rect.right && pageY < rect.bottom ) {
+                    if ( !piece || src_index < 0 || !callback )
+                        return;
+                    callback(src_index, targets[i].index, human_colour, piece);
+                    setTimeout(function () {
+                        delete element.cloned;
+                    }, 17);
+                    myself.reset();
+                    return;
+                }
+            }
+        }
+        function get_size () {
+            var rect = element.getBoundingClientRect();
+            return {w: Math.round(rect.width), h: Math.round(rect.height), center_x: parseInt(rect.width / 2), center_y: parseInt(rect.height / 2)};
+        }
+        element.start = start;
+        element.move = move;
+        element.end = end;
+        element.get_size = get_size;
+
+        this.initialise = function (p, i, t, cb) {
+            piece = p;
+            src_index = i;
+            targets = t;
+            callback = cb;
+            utilities.initialise_events(element);
+        };
+        this.reset = function () {
+            src_index = -1;
+            targets = null;
+            callback = null;
+            utilities.reset_events(element);
+        };
+    };
+})(document.getElementById("base"));
