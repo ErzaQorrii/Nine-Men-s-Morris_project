@@ -26,7 +26,6 @@ function generate_places () {
         v = s[i % 8];
       
         h = s[(i + 2) % 8];
-    
         if ( r ) {
 
             if ( v != 4 )
@@ -43,3 +42,26 @@ function generate_places () {
     
     return places;
 }
+
+
+var indicate_thinking = (function () {
+    var indicator = document.getElementsByClassName("inner")[0];
+    var colours = ["white", "black", "white_wins", "black_wins"];
+    var assigned_colours = [];
+    return function (colour) {
+        var i, c;
+        for ( i = (assigned_colours.length - 1); i >= 0; i-- ) {
+            if ( assigned_colours[i] == colour )
+                return;
+            c = assigned_colours.pop();
+            indicator.classList.remove(c);
+        }
+        for ( i = 0; i < colours.length; i++ ) {
+            if ( colours[i] == colour ) {
+                assigned_colours.push(colour);
+                indicator.classList.add(colour);
+                break;
+            }
+        }
+    };
+})();
