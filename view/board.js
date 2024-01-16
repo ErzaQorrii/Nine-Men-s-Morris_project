@@ -65,3 +65,30 @@ var indicate_thinking = (function () {
         }
     };
 })();
+
+
+function change_borders (colour, collection) {
+    var smooth = {
+        white: "#ECECEB",
+        black: "#282828"
+    };
+    var c = smooth[colour];
+    if ( !c )
+        return;
+    if ( !collection ) {
+        var raw_collection = document.getElementsByClassName("square");
+        if ( !raw_collection || !raw_collection.length )
+            return;
+        collection = [];
+        for ( var i = 0; i < raw_collection.length; i++ )
+            collection.push(raw_collection[i]);
+    }
+    if ( !collection || !collection.length ) {
+        console.log( "Good bye" );
+        return;
+    }
+    var element = collection.pop();
+    element.style.borderColor = c;
+    var t = collection.length * 81 + 20;
+    setTimeout(change_borders, t, colour, collection);
+}
