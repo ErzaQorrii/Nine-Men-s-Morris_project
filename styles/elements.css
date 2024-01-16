@@ -95,3 +95,102 @@ html, body {
     text-shadow: 2px 5px gray;
     color: black;
 }
+
+@media only screen and (orientation : portrait) {
+    #base {
+        top: calc((100vh - 100vw) / 2);
+    }
+    .square {
+        border: solid gray calc(1.6667vh);
+        border-radius: calc(1.25vh);
+    }
+    .square.inner.white_wins::after, .square.inner.black_wins::after {
+        font-size: calc(8vh);
+    }
+}
+
+.place {
+    position: absolute;
+    width: 6.6667%;
+    height: 6.6667%;
+}
+.place_area {
+    content: "";
+    position: absolute;
+    top: -45%;
+    left: -45%;
+    width: 190%;
+    height: 190%;
+}
+
+.h1p {
+    left: 8.3333%;
+}
+.v1p {
+    top: 8.3333%;
+}
+
+.h2p {
+    left: 21.6667%;
+}
+.v2p {
+    top: 21.6667%;
+}
+
+.h3p {
+    left: 35%;
+}
+.v3p {
+    top: 35%;
+}
+
+.h4p {
+    left: 48.3333%;
+}
+.v4p {
+    top: 48.3333%
+}
+
+.h1 {
+    left: 6.6667%;
+}
+.h2 {
+    left: 20%;
+}
+.h3 {
+    left: 33.3333%;
+}
+.h4 {
+    left: 46.6667%;
+}
+.h5 {
+    left: 60%;
+}
+.h6 {
+    left: 73.3333%;
+}
+.h7 {
+    left: 86.6667%;
+}
+
+.v1 {
+    top: 6.6667%;
+}
+.v2 {
+    top: 20%;
+}
+.v3 {
+    top: 33.3333%;
+}
+.v4 {
+    top: 46.6667%;
+}
+.v5 {
+    top: 60%;
+}
+.v6 {
+    top: 73.3333%;
+}
+.v7 {
+    top: 86.6667%;
+}
