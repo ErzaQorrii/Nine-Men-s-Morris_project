@@ -160,3 +160,38 @@ function move_piece(colour, white_board, black_board, white_pieces, black_pieces
     // Send the message (either a move or give up).
     postMessage(msg);
 }
+
+function analyse_respecting_neighbours (white_board, black_board) {
+
+    if ( agressive_analyse )
+        return analyse_agressively(white_board, black_board);
+
+    var joined_board = white_board | black_board;
+    var result = 0;
+    
+    var factor, i, j, building_mills, fac;
+    
+    for ( i = 0; i < 24; i++ ) {
+        
+        fac = 1 << i;
+        
+        if ( !(joined_board & fac) )
+            continue;
+        
+        if ( white_board & fac ) {
+            result += 576;
+            factor = 1;
+        }
+        else {
+            result -= 576;
+            factor = -1;
+        }
+
+        for ( j = 0; j < Library.neighbours[i].length; j++ ) {
+            if ( !(joined_board & (1 << Library.neighbours[i][j])) )
+                result += factor * 12;
+        }
+    }
+
+    return result;
+}
