@@ -194,3 +194,26 @@ html, body {
 .v7 {
     top: 86.6667%;
 }
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    50% {
+        border: none;
+        opacity: 0.92;
+        transform: rotate(180deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+.piece {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    border-radius: 256px;
+    overflow: hidden;
+    box-sizing: border-box;
+}
