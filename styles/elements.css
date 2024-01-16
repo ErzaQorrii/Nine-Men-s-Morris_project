@@ -217,3 +217,26 @@ html, body {
     overflow: hidden;
     box-sizing: border-box;
 }
+.piece.white {
+    background-color: white;
+    background: linear-gradient(-60deg, #D6D6D5, #FFFFFF);
+    border: groove #ECECEB 1px;
+}
+.piece.black {
+    background-color: black;
+    background: linear-gradient(-60deg, #565655, #000000);
+    border: ridge #565655 1px;
+}
+.piece.spin {
+    animation: spin 5s linear infinite;
+}
+.piece.little_slower {
+    transition: all 0.333s;
+}
+.piece.medium_slow {
+    transition: all 0.667s;
+}
+.piece.rather_slow {
+    transition: all 1s;
+}
+
