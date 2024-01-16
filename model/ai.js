@@ -56,3 +56,54 @@ function almost_builds_mill(enemy_board, joined_board, index) {
     // Return the result array indicating the status of potential mills.
     return result;
 }
+
+// Function to determine the best move for a piece in a board game.
+function move_piece(colour, white_board, black_board, white_pieces, black_pieces, initial_white_pieces, initial_black_pieces) {
+
+    var MAX = 6; // Define a constant MAX used for move depth or analysis intensity.
+
+    var result;
+    // Call a helper function to evaluate a move, initially with a depth of 2.
+    var tmp_result = _move_piece(null, colour, white_board, black_board, white_pieces, black_pieces, initial_white_pieces, initial_black_pieces, 2);
+
+    // Check the quality of the returned move, comparing it against a threshold (13247).
+    if (tmp_result && tmp_result.length > 1 && tmp_result[1] && tmp_result[1].length > 1 && Math.abs(tmp_result[0]) > 13247)
+        result = tmp_result;
+    else {
+        // If aggressive analysis is enabled, try a different strategy with depth 1.
+        if (agressive_analyse) {
+            tmp_result = _move_piece(null, colour, white_board, black_board, white_pieces, black_pieces, initial_white_pieces, initial_black_pieces, 1);
+            if (tmp_result && tmp_result.length > 1 && tmp_result[1] && tmp_result[1].length > 1)
+                push_position_to_front(tmp_result[1][0]); // Prioritize this move.
+        }
+        // Make a final attempt to determine a move, using the maximum depth or intensity.
+        result = _move_piece(null, colour, white_board, black_board, white_pieces, black_pieces, initial_white_pieces, initial_black_pieces, MAX);
+    }
+
+    // Log the quality and details of the chosen move, if available.
+    if (result)
+        console.log("MOVE quality: " + result[0]);
+    if (result && result.length > 1 && result[1] && result[1].length > 1)
+        console.log("To move: " + result[1][0] + " --> " + result[1][1]);
+
+    // If no valid move is found, log a message and prepare to give up.
+    if (!result || result.length < 2 || !result[1] || result[1].length < 2) {
+        console.log("Machine gives up in move_piece");
+        var msg = {
+            task: "give_up",
+            id: callback_id // Use a callback identifier for the message.
+        };
+    }
+    else {
+        // If a valid move is found, prepare a message with the move details.
+        var msg = {
+            task: "move_piece",
+            from: result[1][0],
+            to: result[1][1],
+            id: callback_id
+        };
+    }
+
+    // Send the message (either a move or give up).
+    postMessage(msg);
+}
