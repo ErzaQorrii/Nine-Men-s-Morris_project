@@ -1,3 +1,44 @@
+var Mills = Array(24);
+var AlmostMills = Array(24);
+var tmp, tmp1, tmp2, tmp3, ni, n, na;
+for ( i = 0; i < 24; i++ ) {
+    Mills[i] = Array(2);
+    AlmostMills[i] = Array(6);
+    for ( j = 0; j < 2; j++ ) {
+        tmp = 0;
+        tmp1 = 0;
+        tmp2 = 0;
+        tmp3 = 0;
+        for ( k = 0; k < 3; k++ ) {
+            tmp |= 1 << Library.mills[i][j][k];
+            if ( k )
+                tmp1 |= 1 << Library.mills[i][j][k];
+            if ( k != 1 )
+                tmp2 |= 1 << Library.mills[i][j][k];
+            if ( k != 2 )
+                tmp3 |= 1 << Library.mills[i][j][k];
+        }
+        Mills[i][j] = tmp;
+        AlmostMills[i][j * 3] = tmp1;
+        AlmostMills[i][j * 3 + 1] = tmp2;
+        AlmostMills[i][j * 3 + 2] = tmp3;
+    }
+}
+var Neighbours = {};
+var AllNeighbours = {};
+for ( i = 0; i < 24; i++ ) {
+    ni = 1 << i;
+    n = Array(Library.neighbours[i].length);
+    na = 0;
+    for ( j = 0; j < Library.neighbours[i].length; j++ ) {
+        n[j] = 1 << Library.neighbours[i][j];
+        na |= n[j];
+    }
+    Neighbours[ni] = n;
+    AllNeighbours[ni] = na;
+}
+
+
 // Function to check if building a mill is possible on the board at a given index.
 function builds_mill(board, index) {
     var mill;
