@@ -1,3 +1,15 @@
+function randomise_indices () {
+    var random_index, tmp;
+    for ( var i = 0; i < 24; i++ ) {
+        random_index = Math.floor(Math.random() * 24);
+        if ( i == random_index )
+            continue;
+        tmp = indices[i];
+        indices[i] = indices[random_index];
+        indices[random_index] = tmp;
+    }
+}
+randomise_indices();
 var Mills = Array(24);
 var AlmostMills = Array(24);
 var tmp, tmp1, tmp2, tmp3, ni, n, na;
