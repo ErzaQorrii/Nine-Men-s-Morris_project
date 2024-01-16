@@ -56,6 +56,7 @@ function builds_mill(board, index) {
     return false; // Return false if no mill configuration is formed at the given index.
 }
 
+
 // Function to check if a player is almost building a mill on the board.
 function almost_builds_mill(enemy_board, joined_board, index) {
     // Retrieve possible mill and almost mill configurations for the given index.
