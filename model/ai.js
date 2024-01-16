@@ -51,6 +51,34 @@ for ( i = 0; i < 24; i++ ) {
 }
 
 
+function convert (board) {
+    var white_board = 0;
+    var black_board = 0;
+    var white_pieces = 0;
+    var black_pieces = 0;
+    for ( var i = 0; i < 24; i++ ) {
+        if ( !board[i] )
+            continue;
+        if ( board[i] == 1 ) {
+            white_board |= 1 << i;
+            white_pieces++;
+            continue;
+        }
+        black_board |= 1 << i;
+        black_pieces++;
+    }
+    return {
+        white_board: white_board,
+        black_board: black_board,
+        pieces: {
+            white: white_pieces,
+            black: black_pieces
+        }
+    };
+}
+
+/*  */
+
 // Function to check if building a mill is possible on the board at a given index.
 function builds_mill(board, index) {
     var mill;
