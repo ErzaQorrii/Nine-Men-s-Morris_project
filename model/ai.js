@@ -223,3 +223,40 @@ function analyse_respecting_neighbours (white_board, black_board) {
 
     return result;
 }
+
+function jump_piece (colour, white_board, black_board, white_pieces, black_pieces, initial_white_pieces, initial_black_pieces) {
+    
+    var MAX = 4;
+
+    var tmp_result = _jump_piece(null, colour, white_board, black_board, white_pieces, black_pieces, initial_white_pieces, initial_black_pieces, 2);
+    if ( tmp_result && tmp_result.length > 1 && tmp_result[1] && tmp_result[1].length > 1 && Math.abs(tmp_result[0]) < 13247 ) {
+        push_position_to_front(tmp_result[1][0]);
+        push_position_to_front(tmp_result[1][1], 1);
+    }
+
+
+    var result = _jump_piece(null, colour, white_board, black_board, white_pieces, black_pieces, initial_white_pieces, initial_black_pieces, MAX);
+
+    if ( result )
+        console.log( "JUMP quality: " + result[0] );
+    if ( result && result.length > 1 && result[1] && result[1].length > 1 )
+        console.log( "To jump: " + result[1][0] + " --> " + result[1][1] );
+
+    if ( !result || result.length < 2 || !result[1] || result[1].length < 2 ) {
+        console.log( "Machine gives up in jump_piece" );
+        var msg = {
+            task: "give_up",
+            id: callback_id
+        };
+    }
+    else {
+        var msg = {
+            task: "jump_piece",
+            from: result[1][0],
+            to: result[1][1],
+            id: callback_id
+        };
+    }
+
+    postMessage(msg);
+}
