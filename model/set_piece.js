@@ -1,3 +1,22 @@
+function test_set_piece (own_board, opponent_board) {
+
+    var joined_board = own_board | opponent_board;
+    var new_board;
+
+    for ( var i = 0; i < 24; i++ ) {
+        if ( joined_board & (1 << i) )
+            continue;
+        new_board = own_board;
+        new_board |= 1 << i;
+        if ( builds_mill(new_board, i) )
+            return true;
+    }
+
+    return false;
+}
+
+
+
 function _set_piece (given_solution, colour, white_board, black_board, white_pieces, black_pieces, initial_white_pieces, initial_black_pieces, moves_left) {
     
     if ( moves_left <= 0 )
