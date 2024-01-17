@@ -189,6 +189,52 @@ function move_piece(colour, white_board, black_board, white_pieces, black_pieces
     postMessage(msg);
 }
 
+var agressive_analyse = null;
+function analyse_agressively (white_board, black_board) {
+
+    var reversed_board = ~(white_board | black_board);
+    var own_board = (agressive_analyse == "white") ? white_board : black_board;
+    var opponent_board = (agressive_analyse == "black") ? white_board : black_board;
+    var factor = (agressive_analyse == "black") ? -1 : 1;
+
+    var i, fac, new_neighbours;
+
+    var result = 0;
+
+    var neighbour_board = 0;
+    for ( i = 0; i < 24; i++ ) {
+        fac = 1 << i;
+        if ( own_board & fac ) {
+            result += 576 * factor;
+            continue;
+        }
+        if ( !(opponent_board & fac) )
+            continue;
+        neighbour_board |= AllNeighbours[fac] & reversed_board;
+    }
+
+    var remembered = 0;
+    while ( neighbour_board != remembered ) {
+        new_neighbours = 0;
+        remembered = neighbour_board;
+        for ( i = 0; i < 24; i++ ) {
+            fac = 1 << i;
+            if ( !(neighbour_board & fac) )
+                continue;
+            new_neighbours |= AllNeighbours[fac] & reversed_board;
+        }
+        neighbour_board |= new_neighbours;
+    }
+
+    for ( i = 0; i < 24; i++ ) {
+        fac = 1 << i;
+        if ( !(neighbour_board & fac) )
+            continue;
+        result -= factor;
+    }
+
+    return result;
+}
 function analyse_respecting_neighbours (white_board, black_board) {
 
     if ( agressive_analyse )
