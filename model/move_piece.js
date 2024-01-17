@@ -17,7 +17,6 @@ function test_move_piece (own_board, opponent_board) {
                 return true;
         }
     }
-    
     return false;
 }
 function _move_piece (given_solution, colour, white_board, black_board, white_pieces, black_pieces, initial_white_pieces, initial_black_pieces, moves_left) {
@@ -29,26 +28,18 @@ function _move_piece (given_solution, colour, white_board, black_board, white_pi
             return [analyse_respecting_neighbours(white_board, black_board), given_solution];
         return [analyse(white_board, black_board), given_solution];
     }
-
     var best_result_value = (colour == "white") ? -13824 : 13824;
     var best_case = (colour == "white") ? 13823 : -13823;
-    
     var joined_board = white_board | black_board;
-    
     var own_board = (colour == "white") ? white_board : black_board;
-
     var fnc = (opponent_pieces <= 3) ? _jump_piece : _move_piece;
-
     var tmp_result, result;
-
     var neighbours;
-
     var i, j, solution, new_board;
     for ( var ii = 0; ii < 24; ii++ ) {
         i = indices[ii];
         if ( !(own_board & (1 << i)) )
             continue;
-
         if ( Math.round(Math.random()) )
             neighbours = (Library.neighbours[i].slice()).reverse();
         else
