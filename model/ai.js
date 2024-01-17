@@ -306,3 +306,33 @@ function jump_piece (colour, white_board, black_board, white_pieces, black_piece
 
     postMessage(msg);
 }
+
+
+function remove_piece (colour, white_board, black_board, white_pieces, black_pieces, initial_white_pieces, initial_black_pieces) {
+    
+    var MAX = 4;
+
+    var result = _remove_piece(null, colour, white_board, black_board, white_pieces, black_pieces, initial_white_pieces, initial_black_pieces, MAX);
+
+    if ( result )
+        console.log( "REMOVE quality: " + result[0] );
+    if ( result && result.length > 1 && result[1] && result[1].length > 1 )
+        console.log( "Place to remove: " + result[1][1] );
+
+    if ( !result || result.length < 2 || !result[1] || result[1].length < 2 ) {
+        console.log( "Machine gives up in remove_piece" );
+        var msg = {
+            task: "give_up",
+            id: callback_id
+        };
+    }
+    else {
+        var msg = {
+            task: "remove_piece",
+            place: result[1][1],
+            id: callback_id
+        };
+    }
+
+    postMessage(msg);
+}
