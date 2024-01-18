@@ -269,7 +269,58 @@ function analyse_respecting_neighbours (white_board, black_board) {
 
     return result;
 }
+function analyse (white_board, black_board) {
+    
+    var joined_board = white_board | black_board;
+    var result = 0;
+    
+    var factor, i, j, building_mills, own_board, opponent_board, fac;
+    
+    for ( i = 0; i < 24; i++ ) {
+        
+        fac = 1 << i;
+        
+        if ( !(joined_board & fac) )
+            continue;
+        
+        if ( white_board & fac ) {
+            result += 576;
+            factor = 1;
+            own_board = white_board;
+            opponent_board = black_board;
+        }
+        else {
+            result -= 576;
+            factor = -1;
+            own_board = black_board;
+            opponent_board = white_board;
+        }
+        
+        if ( !(i & 1) )
+            result += factor;
+        if ( i > 7 && i < 16 )
+            result += factor * 2;
+        
+        if ( builds_mill(own_board, i) )
+            result += factor * 24;
+        else {
+            building_mills = almost_builds_mill(opponent_board, joined_board, i);
+            if ( building_mills[0] )
+                result += factor * 13 * building_mills[0];
+            if ( building_mills[1] )
+                result += factor * 13 * building_mills[1];
+        }
+        
+        for ( j = 0; j < Library.neighbours[i].length; j++ ) {
+            if ( !(joined_board & (1 << Library.neighbours[i][j])) )
+                result += factor * 5;
+        }
+    }
+    
+    return result;
+}
 
+/*  */
 function jump_piece (colour, white_board, black_board, white_pieces, black_pieces, initial_white_pieces, initial_black_pieces) {
     
     var MAX = 4;
