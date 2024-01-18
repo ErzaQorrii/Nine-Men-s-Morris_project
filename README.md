@@ -24,3 +24,5 @@ se të dy lojtarët do të bëjnë gjithmonë lëvizjen më të mirë për veten
 
 
 (Variabla Search Depth) Ndryshimi i thellësisë së kërkimit mund të zvogëlojë llogaritjen e nevojshme, si dhe të lejojë që algoritmi të shikojë më tej në pemë. Duke lejuar që thellësia e kërkimit të rregullohet në mënyrë dinamike bazuar në gjendjen aktuale të lojës, mund të zgjidhet thellësia optimale, duke lejuar kërkimin më efikas dhe të saktë.
+
+Projekti mund të ekzekutohet gjithashtu në URL-në e mëposhtme: https://a4e42d3b.nine-men-s-morris-project.pages.dev/
