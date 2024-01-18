@@ -22,7 +22,5 @@ Algoritmi minimax është një algoritëm rekurziv i përdorur në teorinë e lo
 Ai përfshin kërkimin përmes një peme nyjesh, ku një nyje është një tabelë dhe pjesë e mundshme e lojës. Algoritmi quhet minimax. Algoritmi supozon
 se të dy lojtarët do të bëjnë gjithmonë lëvizjen më të mirë për veten e tyre.
 
-Një teknikë që është përdorur për të shpejtuar algoritmin minimaks është α-β pruning pasi lejon që disa pjesë të pemës të injorohen dhe për këtë arsye redukton llogaritjen e kërkuar.
-Ai e realizon këtë duke eliminuar degët e pemës nëse garantohet se ato do të rezultojnë në një gjendje më të keqe se çdo lëvizje e vlerësuar më parë.
 
 (Variabla Search Depth) Ndryshimi i thellësisë së kërkimit mund të zvogëlojë llogaritjen e nevojshme, si dhe të lejojë që algoritmi të shikojë më tej në pemë. Duke lejuar që thellësia e kërkimit të rregullohet në mënyrë dinamike bazuar në gjendjen aktuale të lojës, mund të zgjidhet thellësia optimale, duke lejuar kërkimin më efikas dhe të saktë.
