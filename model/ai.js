@@ -1,3 +1,21 @@
+importScripts("../library/utilities.js");
+importScripts("set_piece.js");
+importScripts("move_piece.js");
+importScripts("jump_piece.js");
+importScripts("remove_piece.js");
+
+var callback_id;
+
+var colour_indices = {
+    white: 0,
+    black: 1
+};
+
+var i, j, k;
+var buffer = new ArrayBuffer(24);
+var indices = new Uint8Array(buffer);
+for ( i = 0; i < 24; i++ )
+    indices[i] = i;
 function randomise_indices () {
     var random_index, tmp;
     for ( var i = 0; i < 24; i++ ) {
